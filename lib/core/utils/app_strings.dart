@@ -18,4 +18,5 @@ class AppStrings {
   static const next = 'Proxíma';
 
   static const rickAnimation = 'assets/animation/rick.json';
+  static const mortyAnimation = 'assets/animation/morty.json';
 }

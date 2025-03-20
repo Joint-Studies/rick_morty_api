@@ -1,5 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'features/locations/data/datasources/location_remote_datasource.dart';
+import 'features/locations/data/repositories/location_repository_impl.dart';
+import 'features/locations/domain/repositories/location_repository.dart';
+import 'features/locations/domain/usecases/location_usecase.dart';
+import 'features/locations/presentation/cubit/locations_cubit.dart';
 import 'features/characters/domain/usecases/characters_usecase.dart';
 import 'features/characters/presentation/cubit/characters_cubit.dart';
 import 'core/api/dio_client.dart';
@@ -32,6 +37,32 @@ Future<void> init() async {
   );
   sl.registerSingleton(
     CharactersCubit(
+      sl(),
+    ),
+  );
+
+  // Location
+
+  sl.registerSingleton<LocationRemoteDatasource>(
+    LocationRemoteDatasourceImpl(
+      dioClient: sl(),
+    ),
+  );
+
+  sl.registerSingleton<LocationRepository>(
+    LocationRepositoryImpl(
+      remoteDatasource: sl(),
+    ),
+  );
+
+  sl.registerSingleton(
+    LocationUsecase(
+      locationRepository: sl(),
+    ),
+  );
+
+  sl.registerSingleton(
+    LocationsCubit(
       sl(),
     ),
   );
