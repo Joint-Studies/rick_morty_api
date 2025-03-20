@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_morty_api/core/routes/routes.dart';
+import 'package:rick_morty_api/core/utils/theme_extensions_ui.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,13 +22,12 @@ class HomePage extends StatelessWidget {
                   image: AssetImage('assets/images/logo1.png'),
                 ),
               ),
-              child: const Align(
+              child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   'O guia definitivo',
-                  style: TextStyle(
-                    fontFamily: 'RickAndMortyFont',
-                    fontSize: 26,
+                  style: context.titleStyle.copyWith(
+                    fontSize: 30,
                   ),
                 ),
               ),
@@ -40,16 +40,9 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushNamed(Routes.characters);
             },
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text(
-                'Personagens',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'RickAndMortyFont',
-                  fontSize: 25,
-                ),
-              ),
+              child: Text('Personagens', style: context.titleStyle),
             ),
           ),
           const SizedBox(
@@ -57,16 +50,9 @@ class HomePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {},
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text(
-                'Lugares',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'RickAndMortyFont',
-                  fontSize: 25,
-                ),
-              ),
+              child: Text('Lugares', style: context.titleStyle),
             ),
           ),
           const SizedBox(
@@ -74,16 +60,9 @@ class HomePage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {},
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text(
-                'Episodios',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'RickAndMortyFont',
-                  fontSize: 25,
-                ),
-              ),
+              child: Text('Episodios', style: context.titleStyle),
             ),
           ),
         ],

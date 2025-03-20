@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rick_morty_api/core/routes/router.dart';
 import 'package:rick_morty_api/core/routes/routes.dart';
+import 'package:rick_morty_api/core/utils/theme_data_ui.dart';
 import 'package:rick_morty_api/features/home/home_page.dart';
 import 'injection_container.dart' as sl;
 
@@ -19,10 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       onGenerateRoute: _router.generateRoutes,
       initialRoute: Routes.homePage,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeDataUi.theme,
       home: const HomePage(),
     );
   }

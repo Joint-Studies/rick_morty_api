@@ -4,12 +4,15 @@ class ThemeDataUi {
   ThemeDataUi._();
 
   static ThemeData get theme => ThemeData(
-        primaryColor: const Color(0xFF6A1B9A),
-        secondaryHeaderColor: const Color(0xFF388E3C),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF00E5FF),
-            foregroundColor: const Color(0xFF00C853),
+            backgroundColor: const Color(0xFF4DB6AC),
+            elevation: 5,
+            shadowColor: Color(0xFF166D3B),
+            side: BorderSide(
+              width: 3,
+              color: Color(0xFF9CCC65),
+            ),
           ),
         ),
       );
