@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_morty_api/core/routes/routes.dart';
-import 'package:rick_morty_api/core/utils/theme_extensions_ui.dart';
-import 'package:rick_morty_api/features/characters/presentation/widgets/buttons_navigation_custom.dart';
+import 'package:rick_morty_api/core/utils/app_strings.dart';
+import '../../../../core/routes/routes.dart';
+import '../../../../core/utils/theme_extensions_ui.dart';
+import '../widgets/buttons_navigation_custom.dart';
 import '../cubit/characters_cubit.dart';
 import '../widgets/card_characters_custom.dart';
 import 'package:lottie/lottie.dart';
-// import 'package:flutter_mdi_icons/flutter_mdi_icons.dart';
 
 class CharactersPage extends StatefulWidget {
   const CharactersPage({super.key});
@@ -29,7 +29,7 @@ class _CharactersPageState extends State<CharactersPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Personagens',
+          AppStrings.characters,
           style: context.titleStyle,
         ),
         centerTitle: true,
@@ -40,7 +40,7 @@ class _CharactersPageState extends State<CharactersPage> {
           if (state is CharactersLoading || _showLoadingAnimation) {
             return Center(
               child: Lottie.asset(
-                'assets/animation/rick.json',
+                AppStrings.rickAnimation,
                 width: 200,
                 height: 200,
                 fit: BoxFit.cover,
@@ -80,8 +80,8 @@ class _CharactersPageState extends State<CharactersPage> {
                             child: Hero(
                               tag: 'character_${characters?.id}',
                               child: CardCharactersCustom(
-                                image: characters?.image ?? 'Personagem sem Imagem',
-                                name: characters?.name ?? 'Personagem sem nome',
+                                image: characters?.image ?? AppStrings.noImage,
+                                name: characters?.name ?? AppStrings.noName,
                                 id: characters?.id ?? 0,
                               ),
                             )),
@@ -90,8 +90,8 @@ class _CharactersPageState extends State<CharactersPage> {
                   },
                 ),
                 ButtonsNavigationCustom(
-                  prev: 'Anterior',
-                  next: 'Proxíma',
+                  prev: AppStrings.prev,
+                  next: AppStrings.next,
                   current: state.page,
                   page: state.responseEntity.infoEntity?.pages,
                   onPressedPrev: () {

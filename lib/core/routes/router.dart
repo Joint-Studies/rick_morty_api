@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_morty_api/features/characters/domain/entities/characters_entity.dart';
-import 'package:rick_morty_api/features/characters/presentation/pages/character_datail_page.dart';
 
+import '../../features/characters/domain/entities/characters_entity.dart';
 import '../../features/characters/presentation/cubit/characters_cubit.dart';
+import '../../features/characters/presentation/pages/character_datail_page.dart';
 import '../../features/characters/presentation/pages/characters_page.dart';
-import '../../features/home/home_page.dart';
+import '../../features/home/page/home_page.dart';
 import '../../injection_container.dart';
 import 'routes.dart';
 

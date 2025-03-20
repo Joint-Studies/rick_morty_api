@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rick_morty_api/core/utils/theme_extensions_ui.dart';
-import 'package:rick_morty_api/features/characters/domain/entities/characters_entity.dart';
+import 'package:rick_morty_api/core/utils/app_strings.dart';
+import '../../../../core/utils/theme_extensions_ui.dart';
+import '../../domain/entities/characters_entity.dart';
+import 'package:intl/intl.dart';
 
 class CharacterDetailPage extends StatelessWidget {
   final CharactersEntity character;
@@ -40,17 +42,17 @@ class CharacterDetailPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Nome: ${character.name}',
+            '${AppStrings.name} ${character.name}',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          _buildInfoRow('Status', '${character.status}'),
-          _buildInfoRow('Espécie', '${character.species}'),
-          _buildInfoRow('Origem', '${character.origin?.name}'),
-          _buildInfoRow('Localização', '${character.location?.name}'),
-          _buildInfoRow('Criado em', character.created.toString()),
+          _buildInfoRow(AppStrings.status, '${character.status}'),
+          _buildInfoRow(AppStrings.specie, '${character.species}'),
+          _buildInfoRow(AppStrings.origin, '${character.origin?.name}'),
+          _buildInfoRow(AppStrings.localization, '${character.location?.name}'),
+          _buildInfoRow(AppStrings.created, formatDate('${character.created}')),
           const SizedBox(height: 20),
         ],
       ),
@@ -85,5 +87,10 @@ class CharacterDetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
   }
 }
