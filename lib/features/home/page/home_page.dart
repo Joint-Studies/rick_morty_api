@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rick_morty_api/core/routes/routes.dart';
-import 'package:rick_morty_api/core/utils/theme_extensions_ui.dart';
+import 'package:rick_morty_api/core/utils/app_strings.dart';
+import '../../../core/routes/routes.dart';
+import '../../../core/utils/theme_extensions_ui.dart';
+import '../widgets/elevated_button_custom.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -25,7 +27,7 @@ class HomePage extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'O guia definitivo',
+                  AppStrings.title,
                   style: context.titleStyle.copyWith(
                     fontSize: 30,
                   ),
@@ -36,34 +38,27 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 150,
           ),
-          ElevatedButton(
+          ElevatedButtonCustom(
+            text: AppStrings.characters,
             onPressed: () {
-              Navigator.of(context).pushNamed(Routes.characters);
+              Navigator.of(context).pushNamed(
+                Routes.characters,
+              );
             },
-            child: Padding(
-              padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text('Personagens', style: context.titleStyle),
-            ),
           ),
           const SizedBox(
             height: 15,
           ),
-          ElevatedButton(
+          ElevatedButtonCustom(
             onPressed: () {},
-            child: Padding(
-              padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text('Lugares', style: context.titleStyle),
-            ),
+            text: AppStrings.location,
           ),
           const SizedBox(
             height: 15,
           ),
-          ElevatedButton(
+          ElevatedButtonCustom(
+            text: AppStrings.episodes,
             onPressed: () {},
-            child: Padding(
-              padding: EdgeInsets.only(left: 40, right: 40),
-              child: Text('Episodios', style: context.titleStyle),
-            ),
           ),
         ],
       ),

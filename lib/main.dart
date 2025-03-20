@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rick_morty_api/core/routes/router.dart';
-import 'package:rick_morty_api/core/routes/routes.dart';
-import 'package:rick_morty_api/core/utils/theme_data_ui.dart';
-import 'package:rick_morty_api/features/home/home_page.dart';
+import 'core/routes/router.dart';
+import 'core/routes/routes.dart';
+import 'core/utils/theme_data_ui.dart';
+import 'features/home/page/home_page.dart';
 import 'injection_container.dart' as sl;
 
 void main() async {
