@@ -29,10 +29,13 @@ class CardCharactersCustom extends StatelessWidget {
         ),
         Expanded(
           child: Text(
-            '#$id-$name!',
+            '#$id-$name',
             softWrap: true,
             maxLines: 2,
-            style: TextStyle(overflow: TextOverflow.ellipsis, fontFamily: "GentiumPlus"),
+            style: TextStyle(
+              overflow: TextOverflow.ellipsis,
+              fontFamily: "GentiumPlus",
+            ),
           ),
         ),
       ],

@@ -92,6 +92,9 @@ flutter:
     - family: GentiumPlus
       fonts:
         - asset: assets/fonts/GentiumPlus-Bold.ttf
+    - family: WubbaLubbaDubDub
+      fonts:
+        - asset: assets/fonts/WubbaLubbaDubDub.ttf
    
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
