@@ -8,3 +8,21 @@ abstract class LocationsState extends Equatable {
 }
 
 class LocationsInitial extends LocationsState {}
+
+class LocationsLoading extends LocationsState {}
+
+class LocationLoaded extends LocationsState {
+  final ResponseEntity responseEntity;
+  final int page;
+
+  const LocationLoaded({
+    required this.responseEntity,
+    required this.page,
+  });
+}
+
+class LocationError extends LocationsState {
+  final String? msgError;
+
+  const LocationError({required this.msgError});
+}

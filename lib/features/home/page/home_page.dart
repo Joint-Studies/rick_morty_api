@@ -50,7 +50,11 @@ class HomePage extends StatelessWidget {
             height: 15,
           ),
           ElevatedButtonCustom(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(
+                Routes.location,
+              );
+            },
             text: AppStrings.location,
           ),
           const SizedBox(
