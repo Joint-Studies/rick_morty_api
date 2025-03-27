@@ -7,4 +7,9 @@ extension ThemeExtensionsUi on BuildContext {
         fontFamily: 'WubbaLubbaDubDub',
         fontWeight: FontWeight.bold,
       );
+  TextStyle get commonTextStyle => TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        overflow: TextOverflow.ellipsis,
+      );
 }

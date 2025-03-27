@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rick_morty_api/features/locations/domain/entities/location_entity.dart';
-import 'package:rick_morty_api/features/locations/presentation/pages/location_details_page.dart';
+import '../../features/characters/presentation/cubit/multiple_characters_cubit.dart';
+import '../../features/locations/domain/entities/location_entity.dart';
+import '../../features/locations/presentation/pages/location_details_page.dart';
 import '../../features/locations/presentation/cubit/locations_cubit.dart';
 import '../../features/locations/presentation/pages/location_page.dart';
 
@@ -16,6 +17,7 @@ import 'routes.dart';
 class AppRouter {
   Route generateRoutes(RouteSettings settings) {
     final charactersCubit = sl<CharactersCubit>();
+    final multipleCharacters = sl<MultipleCharactersCubit>();
     final locationCubit = sl<LocationsCubit>();
 
     switch (settings.name) {
@@ -44,13 +46,19 @@ class AppRouter {
       case Routes.locationDetails:
         final location = settings.arguments as LocationEntity;
         return MaterialPageRoute(
-          builder: (context) => BlocProvider.value(
-            value: locationCubit,
-            child: LocationDetailsPage(
-              location: location,
-            ),
-          ),
-        );
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(
+                      value: locationCubit,
+                    ),
+                    BlocProvider.value(
+                      value: multipleCharacters,
+                    ),
+                  ],
+                  child: LocationDetailsPage(
+                    location: location,
+                  ),
+                ));
       case Routes.homePage:
       default:
         return MaterialPageRoute(
