@@ -26,4 +26,10 @@ class CharactersRepositoryImpl implements CharactersRepository {
     final response = await remoteDatasource.prevPage(url);
     return response.toEntity();
   }
+
+  @override
+  Future<ResponseEntity> getMultipleCharacters(List<int> ids) async {
+    final response = await remoteDatasource.getMultipleCharacters(ids);
+    return response.toEntity();
+  }
 }

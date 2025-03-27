@@ -8,6 +8,7 @@ abstract class CharactersRemoteDatasource {
   Future<ResponseModel> getCharactersResponse();
   Future<ResponseModel> nextPage(String url);
   Future<ResponseModel> prevPage(String url);
+  Future<ResponseModel> getMultipleCharacters(List<int> ids);
 }
 
 class CharactersRemoteDatasourceImpl implements CharactersRemoteDatasource {
@@ -33,6 +34,13 @@ class CharactersRemoteDatasourceImpl implements CharactersRemoteDatasource {
   @override
   Future<ResponseModel> prevPage(String url) async {
     final response = await dio.get(url);
+    return ResponseModel.fromJson(response.data);
+  }
+
+  @override
+  Future<ResponseModel> getMultipleCharacters(List<int> ids) async {
+    final String idsParam = ids.join(",");
+    final response = await dio.get("https://rickandmortyapi.com/api/character/$idsParam");
     return ResponseModel.fromJson(response.data);
   }
 }

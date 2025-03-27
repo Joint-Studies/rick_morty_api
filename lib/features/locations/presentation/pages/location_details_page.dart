@@ -1,31 +1,41 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rick_morty_api/core/utils/theme_extensions_ui.dart';
+import 'package:rick_morty_api/features/characters/presentation/cubit/multiple_characters_cubit.dart';
 import 'package:rick_morty_api/features/locations/domain/entities/location_entity.dart';
 
-class LocationDetailsPage extends StatelessWidget {
+class LocationDetailsPage extends StatefulWidget {
   final LocationEntity location;
-  final dio = Dio();
 
-  LocationDetailsPage({
+  const LocationDetailsPage({
     super.key,
     required this.location,
   });
 
-  Future<String> fetchCharacterImage(String residentUrl) async {
-    try {
-      final characterId = residentUrl.split('/').last;
-      final response = await dio.get('https://rickandmortyapi.com/api/character/$characterId');
+  @override
+  State<LocationDetailsPage> createState() => _LocationDetailsPageState();
+}
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-        return data['image'];
-      } else {
-        throw Exception('Erro ao carregar personagem');
-      }
-    } catch (e) {
-      return '';
+class _LocationDetailsPageState extends State<LocationDetailsPage> {
+  final dio = Dio();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.location.residents != null && widget.location.residents!.isNotEmpty) {
+      final ids = widget.location.residents!
+          .map((url) {
+            final id = url.split('/').last;
+            return int.tryParse(id);
+          })
+          .where((id) => id != null)
+          .cast<int>()
+          .toList();
+
+      context.read<MultipleCharactersCubit>().fetchMultipleCharacters(ids);
     }
   }
 
@@ -34,7 +44,7 @@ class LocationDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          location.name ?? 'Detalhes',
+          widget.location.name ?? 'Detalhes',
           style: context.titleStyle,
         ),
         centerTitle: true,
@@ -45,46 +55,110 @@ class LocationDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInfoRow('Nome', '${location.name}'),
-            _buildInfoRow('Tipo', '${location.type}'),
-            _buildInfoRow('Dimensão', '${location.dimension}'),
-            _buildInfoRow('Criado em:', formatDate('${location.created}')),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: location.residents?.length ?? 0,
-                itemBuilder: (context, position) {
-                  final residentUrl = location.residents?[position] ?? '';
-
-                  return FutureBuilder<String>(
-                    future: fetchCharacterImage(residentUrl),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError || snapshot.data == '') {
-                        return const Icon(Icons.error);
-                      } else {
-                        return Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          elevation: 4,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              snapshot.data!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
+            _buildInfoRow('Nome', '${widget.location.name}'),
+            _buildInfoRow('Tipo', '${widget.location.type}'),
+            _buildInfoRow('Dimensão', '${widget.location.dimension}'),
+            _buildInfoRow('Criado em:', formatDate('${widget.location.created}')),
+            SizedBox(
+              height: 10,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Residentes',
+                style: context.titleStyle,
+              ),
+            ),
+            BlocBuilder<MultipleCharactersCubit, MultipleCharactersState>(
+              builder: (context, state) {
+                if (state is MultipleCharactersLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is MultipleCharactersLoaded) {
+                  if (state.responseEntity.charactersEntity != null) {
+                    return Flexible(
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemCount: state.responseEntity.charactersEntity?.length,
+                        itemBuilder: (context, position) {
+                          final multiple = state.responseEntity.charactersEntity?[position];
+                          return Column(
+                            children: [
+                              Flexible(
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  elevation: 4,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      multiple?.image ?? '',
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return multiple?.image == ''
+                                            ? Image.asset('assets/images/default_image.png', width: 100, height: 100)
+                                            : SizedBox.shrink();
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6,
+                              ),
+                              Text(multiple?.name ?? '')
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return Flexible(
+                      child: Column(
+                        children: [
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 4,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                state.responseEntity.characterEntity?.image ?? '',
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return state.responseEntity.characterEntity?.image == ''
+                                      ? Image.asset('assets/images/default_image.png', width: 100, height: 100)
+                                      : SizedBox.shrink();
+                                },
+                              ),
                             ),
                           ),
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            state.responseEntity.characterEntity?.name ?? '',
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                } else if (state is MultipleCharactersError) {
+                  return Center(child: Text('Erro ao carregar personagens.'));
+                }
+                return SizedBox.shrink();
+              },
             ),
           ],
         ),
@@ -101,7 +175,7 @@ class LocationDetailsPage extends StatelessWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+            style: context.commonTextStyle,
           ),
           const SizedBox(width: 5),
           Expanded(
