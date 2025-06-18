@@ -11,11 +11,12 @@ abstract class LocationRemoteDatasource {
 
 class LocationRemoteDatasourceImpl implements LocationRemoteDatasource {
   final DioClient dioClient;
-  final dio = Dio();
+  final Dio dio;
 
   LocationRemoteDatasourceImpl({
     required this.dioClient,
-  });
+    Dio? dio,
+  }) : dio = dio ?? Dio();
 
   @override
   Future<ResponseModel> getLocationResponse() async {

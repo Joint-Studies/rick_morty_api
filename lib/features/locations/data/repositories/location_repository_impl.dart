@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:rick_morty_api/features/locations/data/datasources/location_remote_datasource.dart';
 import 'package:rick_morty_api/features/locations/domain/entities/response_entity.dart';
 import 'package:rick_morty_api/features/locations/domain/repositories/location_repository.dart';
