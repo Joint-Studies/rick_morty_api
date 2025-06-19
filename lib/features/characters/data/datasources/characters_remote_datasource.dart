@@ -13,11 +13,12 @@ abstract class CharactersRemoteDatasource {
 
 class CharactersRemoteDatasourceImpl implements CharactersRemoteDatasource {
   final DioClient dioClient;
-  final dio = Dio();
+  final Dio dio;
 
   CharactersRemoteDatasourceImpl({
     required this.dioClient,
-  });
+    Dio? dio,
+  }) : dio = dio ?? Dio();
 
   @override
   Future<ResponseModel> getCharactersResponse() async {
